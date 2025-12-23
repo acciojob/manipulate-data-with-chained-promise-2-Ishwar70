@@ -1,41 +1,24 @@
-const form = document.getElementById("form");
-const ageInput = document.getElementById("age");
-const nameInput = document.getElementById("name");
 const output = document.getElementById("output");
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
+// Initially empty
+output.textContent = "";
 
-  const age = ageInput.value;
-  const name = nameInput.value;
+// First promise resolves after 1 second
+new Promise((resolve) => {
+  setTimeout(() => {
+    resolve([2, 4]);
+  }, 1000);
+})
+  .then((res) => {
+    output.textContent = res.join(","); // #output shows "2,4"
 
-  // Validation (no period)
-  if (age === "" || name === "") {
-    alert("Please enter valid details");
-    return;
-  }
-
-  // Clear previous output
-  output.textContent = "";
-
-  // Promise with 4-second delay
-  const promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (age > 18) {
-        resolve();
-      } else {
-        reject();
-      }
-    }, 4000);
-  });
-
-  promise
-    .then(() => {
-      alert(`Welcome, ${name}. You can vote.`);
-      output.textContent = `Welcome, ${name}. You can vote.`;
-    })
-    .catch(() => {
-      alert(`Oh sorry ${name}. You aren't old enough.`);
-      output.textContent = `Oh sorry ${name}. You aren't old enough.`;
+    // Second promise resolves after 2 more seconds
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([4, 8]);
+      }, 2000);
     });
-});
+  })
+  .then((res) => {
+    output.textContent = res.join(","); // #output shows "4,8"
+  });
